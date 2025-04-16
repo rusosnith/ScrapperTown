@@ -2,7 +2,7 @@ name: Scrape reuniones
 
 on:
   schedule:
-    - cron: '0 12 * * 1'  # Lunes a las 12:00 UTC
+    - cron: '0 12 1,15 * *'  # Los días 1 y 15 de cada mes a las 12:00 UTC
   workflow_dispatch:
 
 jobs:

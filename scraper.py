@@ -3,6 +3,8 @@ from bs4 import BeautifulSoup
 import csv
 from datetime import datetime
 import time
+import os
+import random
 
 # URL base
 URL_BASE = 'https://www.hcdn.gob.ar/comisiones/permanentes/'
@@ -17,6 +19,9 @@ def obtener_comisiones():
         if response.status_code != 200:
             print(f"Error al obtener la página: {response.status_code}")
             return []
+        
+        # Añadimos una pausa para evitar sobrecargar el servidor
+        time.sleep(random.uniform(1, 3))  # Pausa aleatoria entre 1 y 3 segundos
             
         # Parseamos el HTML con BeautifulSoup
         soup = BeautifulSoup(response.text, 'html.parser')
@@ -74,7 +79,7 @@ def obtener_comisiones():
         print(f"Error al obtener las comisiones: {e}")
         return []
 
-def obtener_reuniones_comision(codigo_comision, nombre_comision, anios=[2022, 2023, 2024, 2025]):
+def obtener_reuniones_comision(codigo_comision, nombre_comision, anios):
     """Obtiene todas las reuniones de una comisión para los años especificados"""
     todas_reuniones = []
     
@@ -89,6 +94,9 @@ def obtener_reuniones_comision(codigo_comision, nombre_comision, anios=[2022, 20
             if response.status_code != 200:
                 print(f"Error al obtener la página de reuniones: {response.status_code}")
                 continue
+            
+            # Añadimos una pausa para evitar sobrecargar el servidor
+            time.sleep(random.uniform(1.5, 4))  # Pausa aleatoria entre 1.5 y 4 segundos
                 
             soup = BeautifulSoup(response.text, 'html.parser')
             
@@ -131,9 +139,6 @@ def obtener_reuniones_comision(codigo_comision, nombre_comision, anios=[2022, 20
             
             print(f"Se encontraron {len(enlaces)} enlaces para {nombre_comision} en {anio}")
             
-            # Esperamos un poco para no sobrecargar el servidor
-            time.sleep(1)
-            
         except Exception as e:
             print(f"Error al obtener reuniones de {nombre_comision} para {anio}: {e}")
     
@@ -159,7 +164,67 @@ def guardar_csv(datos, nombre_archivo, campos):
         print(f"Error al guardar el archivo CSV {nombre_archivo}: {e}")
         return False
 
+def cargar_reuniones_existentes(nombre_archivo):
+    """Carga las reuniones existentes desde un archivo CSV"""
+    reuniones = []
+    
+    if not os.path.exists(nombre_archivo):
+        return reuniones
+        
+    try:
+        with open(nombre_archivo, 'r', encoding='utf-8') as archivo:
+            reader = csv.DictReader(archivo)
+            for fila in reader:
+                reuniones.append(fila)
+                
+        print(f"Se cargaron {len(reuniones)} reuniones existentes desde {nombre_archivo}")
+        return reuniones
+        
+    except Exception as e:
+        print(f"Error al cargar reuniones desde {nombre_archivo}: {e}")
+        return []
+
+def combinar_reuniones(reuniones_existentes, nuevas_reuniones):
+    """Combina las reuniones existentes con las nuevas, evitando duplicados"""
+    # Creamos un conjunto con los IDs de las reuniones existentes
+    ids_existentes = set()
+    for reunion in reuniones_existentes:
+        id_clave = f"{reunion['comision_codigo']}_{reunion['id_reunion']}"
+        ids_existentes.add(id_clave)
+    
+    # Filtramos las nuevas reuniones para excluir las que ya existen
+    reuniones_unicas = []
+    for reunion in nuevas_reuniones:
+        id_clave = f"{reunion['comision_codigo']}_{reunion['id_reunion']}"
+        if id_clave not in ids_existentes:
+            reuniones_unicas.append(reunion)
+            ids_existentes.add(id_clave)  # Añadimos a existentes para no duplicar
+    
+    # Combinamos las existentes con las nuevas únicas
+    todas_reuniones = reuniones_existentes + reuniones_unicas
+    
+    print(f"Se encontraron {len(reuniones_unicas)} nuevas reuniones únicas")
+    print(f"Total de reuniones después de combinar: {len(todas_reuniones)}")
+    
+    return todas_reuniones
+
 def main():
+    # Definimos los archivos CSV
+    archivo_comisiones = 'comisiones_diputados.csv'
+    archivo_reuniones = 'reuniones_diputados.csv'
+    
+    # Verificamos si es primera ejecución o actualización
+    es_primera_ejecucion = not (os.path.exists(archivo_comisiones) and os.path.exists(archivo_reuniones))
+    
+    # Definimos los años a escanear
+    anio_actual = datetime.now().year
+    if es_primera_ejecucion:
+        anios_a_escanear = list(range(2017, anio_actual + 1))
+        print(f"Primera ejecución detectada: escaneando años 2017-{anio_actual}")
+    else:
+        anios_a_escanear = [anio_actual]
+        print(f"Actualización detectada: escaneando solo el año actual ({anio_actual})")
+    
     # Obtiene la información de las comisiones
     comisiones = obtener_comisiones()
     
@@ -167,30 +232,35 @@ def main():
     if comisiones:
         campos_comisiones = ['orden', 'nombre', 'codigo', 'url', 'tipo', 'horario', 
                             'secretario', 'sede_contacto', 'fecha_extraccion']
-        guardar_csv(comisiones, 'comisiones_diputados.csv', campos_comisiones)
+        guardar_csv(comisiones, archivo_comisiones, campos_comisiones)
+        
+        # Cargamos las reuniones existentes (si las hay)
+        reuniones_existentes = cargar_reuniones_existentes(archivo_reuniones)
         
         # Ahora obtenemos las reuniones para cada comisión
-        todas_reuniones = []
+        nuevas_reuniones = []
         
         for comision in comisiones:
             # Obtenemos las reuniones para esta comisión
             reuniones_comision = obtener_reuniones_comision(
                 comision['codigo'], 
-                comision['nombre']
+                comision['nombre'],
+                anios_a_escanear
             )
             
-            todas_reuniones.extend(reuniones_comision)
+            nuevas_reuniones.extend(reuniones_comision)
             
             # Mostramos cuántas reuniones encontramos
             print(f"Total de reuniones para {comision['nombre']}: {len(reuniones_comision)}")
+        
+        # Combinamos las reuniones existentes con las nuevas
+        todas_reuniones = combinar_reuniones(reuniones_existentes, nuevas_reuniones)
         
         # Guardamos todas las reuniones en un archivo CSV
         if todas_reuniones:
             campos_reuniones = ['comision_nombre', 'comision_codigo', 'id_reunion', 'fecha', 
                                'anio', 'texto', 'url', 'fecha_extraccion']
-            guardar_csv(todas_reuniones, 'reuniones_diputados.csv', campos_reuniones)
-            
-            print(f"\nTotal de reuniones encontradas: {len(todas_reuniones)}")
+            guardar_csv(todas_reuniones, archivo_reuniones, campos_reuniones)
 
 if __name__ == '__main__':
     main()
