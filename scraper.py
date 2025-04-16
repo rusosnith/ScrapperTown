@@ -1,80 +1,122 @@
 import requests
 from bs4 import BeautifulSoup
+import csv
+import os
+from datetime import datetime
 
-# Base URL donde se encuentran las comisiones
+# URL base
 URL_BASE = 'https://www.hcdn.gob.ar/comisiones/permanentes/'
 
-# Función para obtener los enlaces de las comisiones
-def obtener_enlaces_comisiones():
-    res = requests.get(URL_BASE)
-    
-    # Verificar si la solicitud fue exitosa
-    if res.status_code != 200:
-        print(f"Error al obtener página: {res.status_code}")
-        return []
+def obtener_comisiones():
+    """Extrae la información de las comisiones desde la página principal"""
+    try:
+        # En lugar de hacer una solicitud HTTP, usaremos directamente el HTML proporcionado
+        # En un caso real, usaríamos:
+        # response = requests.get(URL_BASE)
+        # html = response.text
         
-    soup = BeautifulSoup(res.text, 'html.parser')
-    
-    # Buscar todos los enlaces que contienen 'reuniones/listado-partes-anio.html'
-    enlaces = []
-    for link in soup.find_all('a', href=True):
-        if 'reuniones/listado-partes-anio.html' in link['href']:
-            enlace_comision = link['href']
-            # Extraer el nombre de la comisión desde el enlace
-            # Las URLs suelen tener un formato como /comisiones/permanentes/nombre_comision/...
-            partes = enlace_comision.split('/')
-            # Asegurarse que hay suficientes partes en la URL para extraer el nombre
-            if len(partes) > 3:
-                nombre_comision = partes[3]  # Ajustado el índice para capturar el nombre correcto
-                enlaces.append((nombre_comision, enlace_comision))
-    
-    return enlaces
-
-# Función para obtener las reuniones de una comisión específica
-def obtener_reuniones_comision(nombre_comision, anio):
-    url = f"https://www.hcdn.gob.ar/comisiones/permanentes/{nombre_comision}/reuniones/listado-partes.html?year={anio}&carpeta={nombre_comision}"
-    res = requests.get(url)
-    
-    if res.status_code != 200:
-        print(f"Error al obtener reuniones: {res.status_code}")
-        return []
-    
-    soup = BeautifulSoup(res.text, 'html.parser')
-    
-    reuniones = []
-    for item in soup.find_all('a', href=True):
-        if 'parte.html?id_reunion' in item['href']:
-            # Intentar extraer la fecha considerando diferentes formatos
-            texto = item.text.strip()
-            if "del" in texto:
-                fecha = texto.split("del")[1].strip()
-            else:
-                fecha = texto  # Si no sigue el formato esperado, guardar el texto completo
+        # Para este ejemplo, simularemos que ya tenemos el HTML
+        print("Obteniendo información de comisiones...")
+        
+        # Parseamos el HTML con BeautifulSoup
+        soup = BeautifulSoup(html_comisiones, 'html.parser')
+        
+        # Encontramos la tabla de comisiones
+        tabla = soup.find('table', class_='table-responsive')
+        
+        if not tabla:
+            print("No se encontró la tabla de comisiones en el HTML")
+            return []
+        
+        comisiones = []
+        
+        # Iteramos por cada fila de la tabla, saltando la cabecera
+        for fila in tabla.find('tbody').find_all('tr'):
+            celdas = fila.find_all('td')
             
-            reuniones.append({'fecha': fecha, 'enlace': item['href']})
-    
-    return reuniones
-
-# Función principal para ejecutar el scraper
-def main():
-    print("Analizando enlaces de comisiones...")
-    enlaces_comisiones = obtener_enlaces_comisiones()
-    
-    if enlaces_comisiones:
-        print(f"Encontradas {len(enlaces_comisiones)} comisiones.")
+            # Extraemos los datos de cada celda
+            orden = celdas[0].text.strip()
+            
+            # Extraemos el nombre y la URL de la comisión
+            link_comision = celdas[1].find('a')
+            nombre = link_comision.text.strip()
+            url_comision = f"https://www.hcdn.gob.ar{link_comision['href']}"
+            codigo_comision = link_comision['href'].split('/')[-1]
+            
+            tipo = celdas[2].text.strip()
+            horario = celdas[3].text.strip()
+            secretario = celdas[4].text.strip()
+            
+            # La última celda contiene información de contacto
+            sede_contacto = celdas[5].text.strip().replace('\n', ' ').replace('\t', ' ')
+            while '  ' in sede_contacto:
+                sede_contacto = sede_contacto.replace('  ', ' ')
+            
+            # Creamos un diccionario con la información
+            comision = {
+                'orden': orden,
+                'nombre': nombre,
+                'codigo': codigo_comision,
+                'url': url_comision,
+                'tipo': tipo,
+                'horario': horario,
+                'secretario': secretario,
+                'sede_contacto': sede_contacto,
+                'fecha_extraccion': datetime.now().strftime("%Y-%m-%d")
+            }
+            
+            comisiones.append(comision)
+            
+        print(f"Se encontraron {len(comisiones)} comisiones")
+        return comisiones
         
-        # Ahora obtenemos las reuniones para cada comisión
-        for nombre_comision, enlace in enlaces_comisiones:
-            print(f"Obteniendo reuniones para la comisión: {nombre_comision}")
-            reuniones = obtener_reuniones_comision(nombre_comision, 2025)
-            if reuniones:
-                print(f"Se encontraron {len(reuniones)} reuniones para la comisión {nombre_comision}.")
-                for reunion in reuniones:
-                    print(f"Fecha: {reunion['fecha']}, Enlace: {reunion['enlace']}")
-            else:
-                print(f"No se encontraron reuniones para la comisión {nombre_comision}.")
-    else:
-        print("No se encontraron comisiones.")
+    except Exception as e:
+        print(f"Error al obtener las comisiones: {e}")
+        return []
+
+def guardar_csv(comisiones, nombre_archivo='comisiones_diputados.csv'):
+    """Guarda la información de las comisiones en un archivo CSV"""
+    try:
+        if not comisiones:
+            print("No hay comisiones para guardar")
+            return False
+            
+        # Definimos los campos que queremos guardar
+        campos = ['orden', 'nombre', 'codigo', 'url', 'tipo', 'horario', 
+                  'secretario', 'sede_contacto', 'fecha_extraccion']
+        
+        # Creamos el archivo CSV
+        with open(nombre_archivo, 'w', newline='', encoding='utf-8') as archivo:
+            writer = csv.DictWriter(archivo, fieldnames=campos)
+            writer.writeheader()
+            writer.writerows(comisiones)
+            
+        print(f"Se ha guardado la información en {nombre_archivo}")
+        return True
+        
+    except Exception as e:
+        print(f"Error al guardar el archivo CSV: {e}")
+        return False
+
+def main():
+    # Variable global para almacenar el HTML (en un caso real, esto sería eliminado)
+    global html_comisiones
+    
+    # Extrae el HTML del archivo subido
+    with open('paste.txt', 'r', encoding='utf-8') as f:
+        html_comisiones = f.read()
+    
+    # Obtiene la información de las comisiones
+    comisiones = obtener_comisiones()
+    
+    # Guarda la información en un archivo CSV
+    if comisiones:
+        guardar_csv(comisiones)
+        
+        # Mostrar algunos ejemplos de los datos extraídos
+        print("\nEjemplos de comisiones extraídas:")
+        for i in range(min(5, len(comisiones))):
+            print(f"{i+1}. {comisiones[i]['nombre']} - {comisiones[i]['url']}")
 
 if __name__ == '__main__':
     main()
