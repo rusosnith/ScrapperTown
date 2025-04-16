@@ -2,49 +2,67 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 const fs = require('fs');
 
-const BASE_URL = 'https://www.hcdn.gob.ar/comisiones/permanentes/';
+const URL_BASE = 'https://www.hcdn.gob.ar/comisiones/permanentes/';
 
-async function main() {
-  const { data: html } = await axios.get(BASE_URL);
-  const $ = cheerio.load(html);
+async function obtenerListadoComisiones() {
+  const { data } = await axios.get(URL_BASE);
+  const $ = cheerio.load(data);
+  const enlaces = [];
 
-  const comisiones = [];
-
-  $('a[href*="/comisiones/permanentes/"]').each((i, el) => {
+  $('a').each((i, el) => {
     const href = $(el).attr('href');
-    const nombre = $(el).text().trim();
-    if (href && /^\/comisiones\/permanentes\/[^\/]+$/.test(href)) {
-      const urlBase = new URL(href, BASE_URL).href;
-      const reunionesUrl = urlBase + '/reuniones/listado-partes-anio.html';
-      comisiones.push({ nombre, url: reunionesUrl });
+    if (href && href.includes('/comisiones/permanentes/') && href.includes('reuniones/listado-partes-anio.html')) {
+      const nombre = href.split('/')[3]; // ej: caconstitucionales
+      const urlCompleta = new URL(href, URL_BASE).href;
+      enlaces.push({ nombre, url: urlCompleta });
     }
   });
 
-  console.log(`Encontradas ${comisiones.length} comisiones.`);
+  return enlaces;
+}
 
-  const resultados = [];
+async function obtenerReuniones(comision) {
+  const { nombre, url } = comision;
+  try {
+    const { data } = await axios.get(url);
+    const $ = cheerio.load(data);
+    const resultados = [];
 
-  for (const { nombre, url } of comisiones) {
-    console.log(`Visitando: ${url}`);
-    try {
-      const { data: html } = await axios.get(url);
-      const $ = cheerio.load(html);
-
-      $('a[href*="ver-partes"]').each((i, el) => {
-        const texto = $(el).text().trim();
+    $('a').each((i, el) => {
+      const href = $(el).attr('href');
+      const texto = $(el).text().trim();
+      if (href && href.includes('ver-partes')) {
         resultados.push({
           comision: nombre,
           url,
+          href: new URL(href, url).href,
           fecha: texto,
         });
-      });
-    } catch (err) {
-      console.warn(`Error con ${url}: ${err.message}`);
-    }
+      }
+    });
+
+    console.log(`→ Encontradas ${resultados.length} reuniones para ${nombre}`);
+    return resultados;
+  } catch (e) {
+    console.warn(`Error accediendo a ${url}`);
+    return [];
+  }
+}
+
+async function main() {
+  const comisiones = await obtenerListadoComisiones();
+  console.log(`Encontradas ${comisiones.length} comisiones.`);
+
+  const todasLasReuniones = [];
+
+  for (const comision of comisiones) {
+    console.log(`Visitando: ${comision.url}`);
+    const reuniones = await obtenerReuniones(comision);
+    todasLasReuniones.push(...reuniones);
   }
 
-  fs.writeFileSync('reuniones.json', JSON.stringify(resultados, null, 2));
-  console.log(`Se guardaron ${resultados.length} reuniones.`);
+  fs.writeFileSync('reuniones.json', JSON.stringify(todasLasReuniones, null, 2));
+  console.log(`Se guardaron ${todasLasReuniones.length} reuniones.`);
 }
 
 main();
