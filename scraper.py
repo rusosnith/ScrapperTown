@@ -8,8 +8,11 @@ URL_BASE = 'https://www.hcdn.gob.ar/comisiones/permanentes/'
 def obtener_enlaces_comisiones():
     res = requests.get(URL_BASE)
     
-    # Imprimir el contenido de la respuesta para depurar
-    print(res.text)  # Ver contenido completo de la página
+    # Verificar si la solicitud fue exitosa
+    if res.status_code != 200:
+        print(f"Error al obtener página: {res.status_code}")
+        return []
+        
     soup = BeautifulSoup(res.text, 'html.parser')
     
     # Buscar todos los enlaces que contienen 'reuniones/listado-partes-anio.html'
@@ -18,28 +21,37 @@ def obtener_enlaces_comisiones():
         if 'reuniones/listado-partes-anio.html' in link['href']:
             enlace_comision = link['href']
             # Extraer el nombre de la comisión desde el enlace
-            nombre_comision = enlace_comision.split('/')[2]
-            # Guardar los enlaces completos
-            enlaces.append((nombre_comision, enlace_comision))
+            # Las URLs suelen tener un formato como /comisiones/permanentes/nombre_comision/...
+            partes = enlace_comision.split('/')
+            # Asegurarse que hay suficientes partes en la URL para extraer el nombre
+            if len(partes) > 3:
+                nombre_comision = partes[3]  # Ajustado el índice para capturar el nombre correcto
+                enlaces.append((nombre_comision, enlace_comision))
     
     return enlaces
 
 # Función para obtener las reuniones de una comisión específica
-def obtener_reuniones_comision(carpeta, anio):
-    url = f"https://www.hcdn.gob.ar/comisiones/permanentes/{carpeta}/reuniones/listado-partes.html?year={anio}&carpeta={carpeta}"
+def obtener_reuniones_comision(nombre_comision, anio):
+    url = f"https://www.hcdn.gob.ar/comisiones/permanentes/{nombre_comision}/reuniones/listado-partes.html?year={anio}&carpeta={nombre_comision}"
     res = requests.get(url)
     
-    # Imprimir el contenido de la respuesta para depurar
-    print(f"Contenido de {url}:")
-    print(res.text)  # Ver contenido de la página de reuniones
+    if res.status_code != 200:
+        print(f"Error al obtener reuniones: {res.status_code}")
+        return []
     
     soup = BeautifulSoup(res.text, 'html.parser')
     
     reuniones = []
     for item in soup.find_all('a', href=True):
         if 'parte.html?id_reunion' in item['href']:
-            fecha = item.text.strip().split("del")[1].strip()
-            reuniones.append({'fecha': fecha, 'enlace': item['href']})  # Se cerró el paréntesis aquí
+            # Intentar extraer la fecha considerando diferentes formatos
+            texto = item.text.strip()
+            if "del" in texto:
+                fecha = texto.split("del")[1].strip()
+            else:
+                fecha = texto  # Si no sigue el formato esperado, guardar el texto completo
+            
+            reuniones.append({'fecha': fecha, 'enlace': item['href']})
     
     return reuniones
 
@@ -52,15 +64,15 @@ def main():
         print(f"Encontradas {len(enlaces_comisiones)} comisiones.")
         
         # Ahora obtenemos las reuniones para cada comisión
-        for comision, carpeta in enlaces_comisiones:
-            print(f"Obteniendo reuniones para la comisión: {comision}")
-            reuniones = obtener_reuniones_comision(carpeta, 2025)  # Puedes ajustar el año si lo deseas
+        for nombre_comision, enlace in enlaces_comisiones:
+            print(f"Obteniendo reuniones para la comisión: {nombre_comision}")
+            reuniones = obtener_reuniones_comision(nombre_comision, 2025)
             if reuniones:
-                print(f"Se encontraron {len(reuniones)} reuniones para la comisión {comision}.")
+                print(f"Se encontraron {len(reuniones)} reuniones para la comisión {nombre_comision}.")
                 for reunion in reuniones:
                     print(f"Fecha: {reunion['fecha']}, Enlace: {reunion['enlace']}")
             else:
-                print(f"No se encontraron reuniones para la comisión {comision}.")
+                print(f"No se encontraron reuniones para la comisión {nombre_comision}.")
     else:
         print("No se encontraron comisiones.")
 
