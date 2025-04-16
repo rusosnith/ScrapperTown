@@ -1,7 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 import csv
-import os
 from datetime import datetime
 
 # URL base
@@ -10,16 +9,16 @@ URL_BASE = 'https://www.hcdn.gob.ar/comisiones/permanentes/'
 def obtener_comisiones():
     """Extrae la información de las comisiones desde la página principal"""
     try:
-        # En lugar de hacer una solicitud HTTP, usaremos directamente el HTML proporcionado
-        # En un caso real, usaríamos:
-        # response = requests.get(URL_BASE)
-        # html = response.text
-        
-        # Para este ejemplo, simularemos que ya tenemos el HTML
+        # Hacemos la solicitud HTTP
         print("Obteniendo información de comisiones...")
+        response = requests.get(URL_BASE)
         
+        if response.status_code != 200:
+            print(f"Error al obtener la página: {response.status_code}")
+            return []
+            
         # Parseamos el HTML con BeautifulSoup
-        soup = BeautifulSoup(html_comisiones, 'html.parser')
+        soup = BeautifulSoup(response.text, 'html.parser')
         
         # Encontramos la tabla de comisiones
         tabla = soup.find('table', class_='table-responsive')
@@ -99,13 +98,6 @@ def guardar_csv(comisiones, nombre_archivo='comisiones_diputados.csv'):
         return False
 
 def main():
-    # Variable global para almacenar el HTML (en un caso real, esto sería eliminado)
-    global html_comisiones
-    
-    # Extrae el HTML del archivo subido
-    with open('paste.txt', 'r', encoding='utf-8') as f:
-        html_comisiones = f.read()
-    
     # Obtiene la información de las comisiones
     comisiones = obtener_comisiones()
     
