@@ -39,4 +39,30 @@ def obtener_reuniones_comision(carpeta, anio):
     for item in soup.find_all('a', href=True):
         if 'parte.html?id_reunion' in item['href']:
             fecha = item.text.strip().split("del")[1].strip()
-            reuniones.append({'fecha': fecha, 'enlace': item
+            reuniones.append({'fecha': fecha, 'enlace': item['href']})  # Se cerró el paréntesis aquí
+    
+    return reuniones
+
+# Función principal para ejecutar el scraper
+def main():
+    print("Analizando enlaces de comisiones...")
+    enlaces_comisiones = obtener_enlaces_comisiones()
+    
+    if enlaces_comisiones:
+        print(f"Encontradas {len(enlaces_comisiones)} comisiones.")
+        
+        # Ahora obtenemos las reuniones para cada comisión
+        for comision, carpeta in enlaces_comisiones:
+            print(f"Obteniendo reuniones para la comisión: {comision}")
+            reuniones = obtener_reuniones_comision(carpeta, 2025)  # Puedes ajustar el año si lo deseas
+            if reuniones:
+                print(f"Se encontraron {len(reuniones)} reuniones para la comisión {comision}.")
+                for reunion in reuniones:
+                    print(f"Fecha: {reunion['fecha']}, Enlace: {reunion['enlace']}")
+            else:
+                print(f"No se encontraron reuniones para la comisión {comision}.")
+    else:
+        print("No se encontraron comisiones.")
+
+if __name__ == '__main__':
+    main()
