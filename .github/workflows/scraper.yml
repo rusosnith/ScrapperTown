@@ -1,33 +1,32 @@
-name: Scrape reuniones HCDN
+name: Scrape reuniones
 
 on:
   schedule:
-    - cron: '0 12 * * 1' # corre todos los lunes a las 12:00 UTC
-  workflow_dispatch: # también se puede correr a mano
+    - cron: '0 12 * * 1'  # Lunes a las 12:00 UTC
+  workflow_dispatch:
 
 jobs:
-  build:
+  run-scraper:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Clonar repositorio
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
-      - name: Instalar Node.js
-        uses: actions/setup-node@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          node-version: '20'
+          python-version: 3.10
 
-      - name: Instalar dependencias
-        run: npm install
+      - name: Install dependencies
+        run: pip install beautifulsoup4 requests
 
-      - name: Ejecutar el scraper
-        run: node scraper.js
+      - name: Run scraper
+        run: python scraper.py
 
-      - name: Subir cambios al repo
+      - name: Commit CSV
         run: |
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
-          git add reuniones.json
-          git commit -m "Actualización automática del dataset [skip ci]" || echo "No hay cambios"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add reuniones.csv
+          git commit -m "Actualización automática de reuniones" || echo "Sin cambios"
           git push
