@@ -9,22 +9,29 @@ def obtener_enlaces_comisiones():
     res = requests.get(URL_BASE)
     soup = BeautifulSoup(res.text, 'html.parser')
     enlaces = []
+    print("Analizando enlaces de comisiones...")
     for a in soup.find_all('a', href=True):
         href = a['href']
         if 'reuniones/listado-partes-anio.html' in href:
+            # Obtener el nombre de la comisión desde la URL
             nombre = href.strip('/').split('/')[2]
-            url = urljoin(URL_BASE, href)
-            enlaces.append((nombre, url))
+            # Construcción de la URL con los parámetros 'year' y 'carpeta'
+            url_completa = f"https://www.hcdn.gob.ar/comisiones/permanentes/{nombre}/reuniones/listado-partes.html?year=2025&carpeta={nombre}"
+            enlaces.append((nombre, url_completa))
+            print(f"Comisión encontrada: {nombre} -> {url_completa}")
     return enlaces
 
 def obtener_reuniones(url_comision):
     res = requests.get(url_comision)
     soup = BeautifulSoup(res.text, 'html.parser')
     reuniones = []
-    for li in soup.select('ul li a[href*=".pdf"]'):
+    print(f"Buscando reuniones en: {url_comision}")
+    # Buscar todos los <a> dentro de los <li> que contienen la palabra 'Parte de la reunión'
+    for li in soup.select('div ul li a[href*="parte.html"]'):
         texto = li.get_text(strip=True)
         link = urljoin(url_comision, li['href'])
         reuniones.append((texto, link))
+        print(f"Reunión encontrada: {texto} -> {link}")
     return reuniones
 
 def main():
