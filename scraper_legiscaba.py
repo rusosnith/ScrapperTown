@@ -77,7 +77,8 @@ def obtener_legisladores():
                 'bloque_url': bloc_url,
                 'mandato_inicio': mandate_start,
                 'mandato_fin': mandate_end,
-                'fecha_extraccion': datetime.now().strftime("%Y-%m-%d")
+                'fecha_extraccion': datetime.now().strftime("%Y-%m-%d"),
+                'activo': True  # Indicador de si el legislador está actualmente en funciones
             }
             
             legisladores.append(legislador)
@@ -151,49 +152,70 @@ def cargar_legisladores_existentes(nombre_archivo):
         with open(nombre_archivo, 'r', encoding='utf-8') as archivo:
             reader = csv.DictReader(archivo)
             for fila in reader:
+                # Convertir 'activo' de string a booleano
+                if 'activo' in fila:
+                    fila['activo'] = fila['activo'].lower() == 'true'
                 legisladores.append(fila)
                 
-        print(f"Se cargaron {len(legisladores)} legisladores existentes desde {nombre_archivo}")
+        print(f"Se cargaron {len(legisladores)} registros de legisladores desde {nombre_archivo}")
         return legisladores
         
     except Exception as e:
         print(f"Error al cargar legisladores desde {nombre_archivo}: {e}")
         return []
 
-def combinar_legisladores(existentes, nuevos):
-    """Combina los legisladores existentes con los nuevos, actualizando datos"""
-    # Creamos un diccionario con los legisladores existentes usando el nombre como clave
-    dict_existentes = {leg['nombre']: leg for leg in existentes}
+def combinar_legisladores_historicos(existentes, nuevos):
+    """
+    Combina los legisladores existentes con los nuevos, manteniendo un registro histórico.
+    Si un legislador existente ya no está en la lista actual, se marca como inactivo.
+    """
+    # Convertir a dict para búsqueda rápida
+    dict_nuevos = {leg['nombre']: leg for leg in nuevos}
     
     # Lista para el resultado combinado
     combinados = []
     
-    # Contador de actualizaciones
+    # Contadores para estadísticas
     actualizados = 0
+    inactivados = 0
     nuevos_agregados = 0
     
-    # Procesamos los nuevos legisladores
-    for nuevo in nuevos:
-        nombre = nuevo['nombre']
-        
-        # Si ya existe, actualizamos algunos campos y conservamos otros
-        if nombre in dict_existentes:
-            legislador = dict_existentes[nombre].copy()
-            
-            # Campos que siempre actualizamos
-            legislador['bloque'] = nuevo['bloque']
-            legislador['imagen_url'] = nuevo['imagen_url']
-            legislador['fecha_extraccion'] = nuevo['fecha_extraccion']
-            
-            # Añadimos el legislador combinado
-            combinados.append(legislador)
-            actualizados += 1
-        else:
-            # Es un legislador nuevo
-            combinados.append(nuevo)
-            nuevos_agregados += 1
+    # Fecha actual para marcar cuando un legislador deja de estar activo
+    fecha_actual = datetime.now().strftime("%Y-%m-%d")
     
-    print(f"Actualización completada: {actualizados} legisladores actualizados, {nuevos_agregados} nuevos agregados")
+    # Primero procesamos los existentes
+    for existente in existentes:
+        nombre = existente['nombre']
+        
+        # Si el legislador sigue activo en la nueva lista
+        if nombre in dict_nuevos:
+            # Actualizar datos que pueden cambiar
+            existente['bloque'] = dict_nuevos[nombre]['bloque']
+            existente['bloque_url'] = dict_nuevos[nombre]['bloque_url']
+            existente['imagen_url'] = dict_nuevos[nombre]['imagen_url']
+            existente['fecha_extraccion'] = dict_nuevos[nombre]['fecha_extraccion']
+            existente['activo'] = True
+            
+            # Eliminar de nuevos para no duplicar
+            del dict_nuevos[nombre]
+            
+            actualizados += 1
+        elif existente.get('activo', True):
+            # Si era activo y ya no está en la lista, lo marcamos como inactivo
+            existente['activo'] = False
+            existente['fecha_baja'] = fecha_actual
+            inactivados += 1
+        
+        combinados.append(existente)
+    
+    # Ahora agregamos los nuevos que no existían antes
+    for nombre, nuevo in dict_nuevos.items():
+        nuevo['activo'] = True
+        nuevo['fecha_alta'] = fecha_actual
+        combinados.append(nuevo)
+        nuevos_agregados += 1
+    
+    print(f"Actualización histórica: {actualizados} actualizados, {inactivados} inactivados, {nuevos_agregados} nuevos")
     return combinados
 
 def guardar_csv(datos, nombre_archivo, campos):
@@ -217,26 +239,47 @@ def guardar_csv(datos, nombre_archivo, campos):
         return False
 
 def generar_analisis(legisladores):
-    """Genera un análisis básico de los datos de legisladores"""
+    """Genera análisis de los datos de legisladores"""
     try:
         # Convertimos a DataFrame para análisis
         df = pd.DataFrame(legisladores)
         
-        # Análisis por bloque
-        analisis_bloques = df['bloque'].value_counts().reset_index()
+        # Filtrar legisladores activos para el análisis actual
+        df_activos = df[df['activo'] == True]
+        
+        # Análisis por bloque (legisladores activos)
+        analisis_bloques = df_activos['bloque'].value_counts().reset_index()
         analisis_bloques.columns = ['Bloque', 'Cantidad']
         
+        # Análisis histórico de cambios
+        if 'fecha_alta' in df.columns and 'fecha_baja' in df.columns:
+            # Preparar datos para análisis temporal
+            df['fecha_alta'] = pd.to_datetime(df['fecha_alta'], errors='coerce')
+            df['fecha_baja'] = pd.to_datetime(df['fecha_baja'], errors='coerce')
+            
+            # Análisis de rotación por mes
+            df_rotacion = df.groupby(pd.Grouper(key='fecha_alta', freq='M')).size().reset_index()
+            df_rotacion.columns = ['Mes', 'Nuevos_Legisladores']
+            
+            # Guardar análisis temporal
+            df_rotacion.to_csv('analisis_rotacion_mensual.csv', index=False, encoding='utf-8')
+        
         # Análisis por periodo de mandato
-        df['anio_inicio'] = df['mandato_inicio'].str.extract(r'(\d{4})').astype(float)
-        analisis_periodos = df['anio_inicio'].value_counts().reset_index()
+        df_activos['anio_inicio'] = df_activos['mandato_inicio'].str.extract(r'(\d{4})').astype(float)
+        analisis_periodos = df_activos['anio_inicio'].value_counts().reset_index()
         analisis_periodos.columns = ['Año de inicio', 'Cantidad']
         analisis_periodos = analisis_periodos.sort_values('Año de inicio')
         
         # Guardamos los análisis
-        analisis_bloques.to_csv('analisis_bloques.csv', index=False, encoding='utf-8')
-        analisis_periodos.to_csv('analisis_periodos.csv', index=False, encoding='utf-8')
+        analisis_bloques.to_csv('analisis_bloques_actuales.csv', index=False, encoding='utf-8')
+        analisis_periodos.to_csv('analisis_periodos_actuales.csv', index=False, encoding='utf-8')
         
-        print("Análisis generado correctamente")
+        # Análisis histórico total
+        historial_bloques = df.groupby(['bloque', 'activo']).size().reset_index()
+        historial_bloques.columns = ['Bloque', 'Activo', 'Cantidad']
+        historial_bloques.to_csv('historial_bloques.csv', index=False, encoding='utf-8')
+        
+        print("Análisis generados correctamente")
         return True
         
     except Exception as e:
@@ -245,23 +288,24 @@ def generar_analisis(legisladores):
 
 def main():
     # Definimos los archivos CSV
-    archivo_legisladores = 'legisladores.csv'
+    archivo_legisladores = 'legisladores_historico.csv'
     
-    # Verificamos si es primera ejecución o actualización
-    es_primera_ejecucion = not os.path.exists(archivo_legisladores)
-    
-    # Obtiene la información de los legisladores
+    # Obtiene la información de los legisladores actuales
     nuevos_legisladores = obtener_legisladores()
     
     if nuevos_legisladores:
         # Si existen legisladores previos, los cargamos
         legisladores_existentes = cargar_legisladores_existentes(archivo_legisladores)
         
-        # Si es primera ejecución o queremos detalles completos
-        if es_primera_ejecucion or os.environ.get('OBTENER_DETALLES', 'false').lower() == 'true':
-            print("Obteniendo detalles de cada legislador...")
+        # Obtener detalles solo para nuevos legisladores
+        if os.environ.get('OBTENER_DETALLES', 'true').lower() == 'true':
+            # Creamos un conjunto con los nombres de legisladores existentes
+            nombres_existentes = {leg['nombre'] for leg in legisladores_existentes}
+            
+            print("Obteniendo detalles de legisladores nuevos...")
             for legislador in nuevos_legisladores:
-                if legislador['perfil_url']:
+                # Solo obtenemos detalles para los que no existen aún
+                if legislador['nombre'] not in nombres_existentes and legislador['perfil_url']:
                     detalles = obtener_detalles_legislador(
                         legislador['perfil_url'], 
                         legislador['nombre']
@@ -269,19 +313,23 @@ def main():
                     # Actualizamos el diccionario con los detalles obtenidos
                     legislador.update(detalles)
         
-        # Combinamos los legisladores existentes con los nuevos
-        todos_legisladores = combinar_legisladores(legisladores_existentes, nuevos_legisladores)
+        # Combinamos los legisladores existentes con los nuevos, manteniendo historial
+        todos_legisladores = combinar_legisladores_historicos(legisladores_existentes, nuevos_legisladores)
         
         # Definimos los campos para el CSV
         campos = ['nombre', 'perfil_url', 'imagen_url', 'bloque', 'bloque_url', 
                  'mandato_inicio', 'mandato_fin', 'fecha_extraccion', 
-                 'email', 'telefono', 'comisiones']
+                 'email', 'telefono', 'comisiones', 'activo', 'fecha_alta', 'fecha_baja']
         
         # Guardamos todos los legisladores en un archivo CSV
         guardar_csv(todos_legisladores, archivo_legisladores, campos)
         
         # Generamos análisis de los datos
         generar_analisis(todos_legisladores)
+        
+        # Generamos un CSV solo con legisladores activos para fácil consulta
+        legisladores_activos = [leg for leg in todos_legisladores if leg.get('activo', False)]
+        guardar_csv(legisladores_activos, 'legisladores_activos.csv', campos)
 
 if __name__ == '__main__':
     main()

@@ -2,8 +2,8 @@ name: Scraper de Legisladores
 
 on:
   schedule:
-    # Ejecutar cada semana los lunes a las 9:00 AM
-    - cron: '0 9 * * 1'
+    # Ejecutar el día 1 de cada mes a las 9:00 AM
+    - cron: '0 9 1 * *'
   workflow_dispatch:  # Permitir ejecución manual
 
 jobs:
@@ -26,12 +26,10 @@ jobs:
         
     - name: Run scraper
       run: python scraper_legiscaba.py
-      env:
-        OBTENER_DETALLES: ${{ github.event_name == 'workflow_dispatch' || github.run_number == 1 }}
         
     - name: Commit and push if changes
       run: |
         git config --global user.name 'GitHub Action'
         git config --global user.email 'action@github.com'
         git add -A
-        git diff --quiet && git diff --staged --quiet || (git commit -m "Actualización automática de datos: $(date +%Y-%m-%d)" && git push)
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Actualización de legisladores: $(date +%Y-%m-%d)" && git push)
