@@ -1,0 +1,33 @@
+name: Scrape reuniones HCDN
+
+on:
+  schedule:
+    - cron: '0 12 * * 1' # corre todos los lunes a las 12:00 UTC
+  workflow_dispatch: # también se puede correr a mano
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v4
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar dependencias
+        run: npm install
+
+      - name: Ejecutar el scraper
+        run: node scraper.js
+
+      - name: Subir cambios al repo
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add reuniones.json
+          git commit -m "Actualización automática del dataset [skip ci]" || echo "No hay cambios"
+          git push
