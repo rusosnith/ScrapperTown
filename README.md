@@ -1,45 +1,47 @@
 # ScrapperTown
 Lugar donde scrapeo cosas
 
-- scrapeo de reuniones de comision de diputados nacionales
-- scrapeo de legisladores de la ciudad de buenos aires
+## Scrapers disponibles
 
-# Scraper de Legisladores - Legislatura de Buenos Aires
+### 1. Scraper de Comisiones de Diputados Nacionales
+Extrae información de las comisiones de la Cámara de Diputados, incluyendo integrantes y reuniones.
 
-Este repositorio contiene un scraper automático que extrae información sobre los legisladores de la Legislatura de la Ciudad de Buenos Aires.
+**Archivos generados:**
+- `comisiones_diputados.csv`: Información general de las comisiones
+- `integrantes_comisiones.csv`: Histórico de integrantes con fechas de inicio y fin
+- `reuniones_diputados.csv`: Reuniones de todas las comisiones
 
-## Datos extraídos
+**Automatización:** Se ejecuta el 1° de cada mes
 
-El scraper obtiene los siguientes datos:
+**Funcionalidad especial:** Mantiene un histórico de cambios en los integrantes. Cuando alguien es reemplazado, se cierra la fecha de fin del anterior y se agrega el nuevo con su fecha de inicio.
 
-- Nombre completo de los legisladores
-- URL del perfil en el sitio oficial
-- URL de la imagen
-- Bloque político
-- URL del bloque político
-- Fecha de inicio y fin del mandato
-- Correo electrónico (cuando está disponible)
-- Teléfono (cuando está disponible)
-- Comisiones a las que pertenece (cuando está disponible)
+### 2. Scraper de Legisladores - Legislatura de Buenos Aires
+Extrae información sobre los legisladores de la Legislatura de la Ciudad de Buenos Aires con seguimiento histórico.
 
-## Archivos generados
+**Datos extraídos:**
+- Nombre completo, bloque político, mandatos
+- URLs de perfil e imagen
+- Correo electrónico y teléfono (cuando disponible)
+- Comisiones de pertenencia
 
-- `legisladores.csv`: Contiene la información completa de todos los legisladores
-- `analisis_bloques.csv`: Análisis de la distribución de legisladores por bloque político
-- `analisis_periodos.csv`: Análisis de la distribución de legisladores por año de inicio del mandato
+**Archivos generados:**
+- `legisladores_historico.csv`: Registro histórico completo de todos los legisladores (activos e inactivos)
+- `legisladores_activos.csv`: Solo legisladores actualmente en funciones
+- Archivos de análisis por bloque y período
 
-## Automatización
+**Automatización:** Se ejecuta el 1° de cada mes
 
-Este scraper se ejecuta automáticamente cada semana mediante GitHub Actions, asegurando que los datos estén siempre actualizados.
+**Funcionalidad especial:** Sistema incremental que detecta cuando un legislador deja su cargo y registra automáticamente las fechas de baja, manteniendo un historial completo.
 
 ## Uso local
 
-Para ejecutar el scraper localmente:
+Para ejecutar cualquier scraper localmente:
 
 1. Clone este repositorio
 2. Instale las dependencias: `pip install requests beautifulsoup4 pandas`
-3. Ejecute el script: `python scraper_legislatura.py`
+3. Ejecute el script correspondiente:
+   - `python scraper_comisiones_mejorado.py`
+   - `python scraper_legiscaba.py`
 
 ## Licencia
-
 Este proyecto está bajo la licencia MIT.
