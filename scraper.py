@@ -275,66 +275,49 @@ def actualizar_integrantes_con_fechas(existentes, nuevos):
     """
     fecha_actual = datetime.now().strftime("%Y-%m-%d")
     
-    # Crear diccionario para búsqueda rápida: clave = comision_codigo + cargo
+    # Crear diccionario para búsqueda rápida: clave = comision_codigo + nombre_completo + bloque
+    # Esto maneja casos donde hay personas con el mismo nombre en diferentes bloques
     dict_nuevos = {}
     for integrante in nuevos:
-        clave = f"{integrante['comision_codigo']}_{integrante['cargo']}"
+        clave = f"{integrante['comision_codigo']}_{integrante['nombre_completo']}_{integrante['bloque']}"
         dict_nuevos[clave] = integrante
     
     # Crear diccionario de existentes por clave similar
     dict_existentes = {}
     for integrante in existentes:
-        clave = f"{integrante['comision_codigo']}_{integrante['cargo']}"
-        if clave not in dict_existentes:
-            dict_existentes[clave] = []
-        dict_existentes[clave].append(integrante)
+        clave = f"{integrante['comision_codigo']}_{integrante['nombre_completo']}_{integrante['bloque']}"
+        dict_existentes[clave] = integrante
     
     resultado = []
     
     # Procesar integrantes existentes
-    for clave, lista_existentes in dict_existentes.items():
+    for clave, existente in dict_existentes.items():
         if clave in dict_nuevos:
-            # El cargo sigue ocupado
+            # La misma persona del mismo bloque sigue en la misma comisión
             nuevo = dict_nuevos[clave]
             
-            # Buscar si es la misma persona
-            for existente in lista_existentes:
-                if not existente.get('fecha_fin'):  # Solo los que están activos
-                    if existente['nombre_completo'] == nuevo['nombre_completo']:
-                        # Misma persona, actualizar fecha_fin
-                        existente['fecha_fin'] = fecha_actual
-                        existente['bloque'] = nuevo['bloque']  # Actualizar bloque por si cambió
-                        existente['distrito'] = nuevo['distrito']
-                        resultado.append(existente)
-                        break
-                    else:
-                        # Persona diferente, cerrar el anterior
-                        existente['fecha_fin'] = fecha_actual
-                        resultado.append(existente)
-                        
-                        # Agregar el nuevo
-                        nuevo['fecha_inicio'] = fecha_actual
-                        nuevo['fecha_fin'] = fecha_actual
-                        resultado.append(nuevo)
-                        break
-                else:
-                    # Integrante ya cerrado, mantener
-                    resultado.append(existente)
+            # Actualizar datos que pueden cambiar (cargo puede cambiar, bloque se mantiene en la clave)
+            existente['cargo'] = nuevo['cargo']  # El cargo puede haber cambiado
+            existente['distrito'] = nuevo['distrito']  # El distrito puede haber cambiado
+            existente['fecha_fin'] = fecha_actual  # Actualizar fecha fin
+            
+            resultado.append(existente)
             
             # Remover de nuevos para no duplicar
             del dict_nuevos[clave]
         else:
-            # El cargo ya no existe, cerrar todos los activos
-            for existente in lista_existentes:
-                if not existente.get('fecha_fin'):
-                    existente['fecha_fin'] = fecha_actual
-                resultado.append(existente)
+            # La persona ya no está en la comisión con ese bloque, cerrar
+            if not existente.get('fecha_fin') or existente.get('fecha_fin') == existente.get('fecha_inicio'):
+                existente['fecha_fin'] = fecha_actual
+            resultado.append(existente)
     
-    # Agregar los nuevos cargos que no existían antes
+    # Agregar todos los nuevos integrantes que no existían antes
     for clave, nuevo in dict_nuevos.items():
         nuevo['fecha_inicio'] = fecha_actual
         nuevo['fecha_fin'] = fecha_actual
         resultado.append(nuevo)
+    
+    print(f"Actualización de integrantes: {len(existentes)} existentes, {len(nuevos)} nuevos, {len(resultado)} total final")
     
     return resultado
 
