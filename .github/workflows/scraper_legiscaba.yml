@@ -1,8 +1,8 @@
-name: Scraper de Legisladores
+name: Scraper de Legisladores CABA
 
 on:
   schedule:
-    # Ejecutar el día 1 de cada mes a las 9:00 AM
+    # Ejecutar el día 1 de cada mes a las 9:00 AM UTC
     - cron: '0 9 1 * *'
   workflow_dispatch:  # Permitir ejecución manual
 
@@ -22,14 +22,21 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install requests beautifulsoup4 pandas
+        pip install requests beautifulsoup4 pandas selenium webdriver-manager
         
     - name: Run scraper
       run: python scraper_legiscaba.py
         
     - name: Commit and push if changes
       run: |
-        git config --global user.name 'GitHub Action'
+        git config --global user.name 'GitHub Action Bot'
         git config --global user.email 'action@github.com'
         git add -A
-        git diff --quiet && git diff --staged --quiet || (git commit -m "Actualización de legisladores: $(date +%Y-%m-%d)" && git push)
+        
+        # Verificar si hay cambios para commitear
+        if git diff --quiet && git diff --staged --quiet; then
+          echo "No hay cambios para commitear"
+        else
+          git commit -m "📊 Actualización automática de legisladores CABA: $(date +%Y-%m-%d)"
+          git push
+        fi
