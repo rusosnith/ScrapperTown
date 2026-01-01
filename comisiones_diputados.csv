@@ -1,47 +1,47 @@
 orden,nombre,codigo,url,tipo,horario,secretario,sede_contacto,fecha_extraccion
-1,ASUNTOS CONSTITUCIONALES,caconstitucionales,https://www.hcdn.gob.ar/comisiones/permanentes/caconstitucionales,Unicameral,Martes 14.00hs,,Piso P04 Oficina 449 -60752431 Internos 2431/32,2025-12-22
-2,LEGISLACION GENERAL,clgeneral,https://www.hcdn.gob.ar/comisiones/permanentes/clgeneral,Unicameral,Miércoles 16.00hs,,Piso P02 Oficina 235 -60752248 Internos 2248,2025-12-22
-3,RELACIONES EXTERIORES Y CULTO,creyculto,https://www.hcdn.gob.ar/comisiones/permanentes/creyculto,Unicameral,Miércoles 10.00hs,,Piso P04 Oficina 407 -6075-2409 Internos 2409/2407,2025-12-22
-4,PRESUPUESTO Y HACIENDA,cpyhacienda,https://www.hcdn.gob.ar/comisiones/permanentes/cpyhacienda,Unicameral,,,Piso P04 Oficina 418 -6075-0000 Internos 2444/2416/2450,2025-12-22
-5,EDUCACION,ceducacion,https://www.hcdn.gob.ar/comisiones/permanentes/ceducacion,Unicameral,Martes 15.00 hs,,Piso P04 Oficina 406 -6075-2426 Internos 2406/05/26,2025-12-22
-6,"CIENCIA, TECNOLOGIA E INNOVACION PRODUCTIVA",ccytecnologia,https://www.hcdn.gob.ar/comisiones/permanentes/ccytecnologia,Unicameral,Martes 18.00hs,,Piso P01 Oficina 130 -6075-2120 Internos 2120/21,2025-12-22
-7,CULTURA,ccultura,https://www.hcdn.gob.ar/comisiones/permanentes/ccultura,Unicameral,Martes 17.00hs,,Piso P04 Oficina 401 -6075-2402 Internos 2402/56/59,2025-12-22
-8,JUSTICIA,cjusticia,https://www.hcdn.gob.ar/comisiones/permanentes/cjusticia,Unicameral,Miércoles 16.00hs,,Piso P04 Oficina 423 -6075-2418 Internos 2418/17,2025-12-22
-9,PREVISION Y SEGURIDAD SOCIAL,cpyssocial,https://www.hcdn.gob.ar/comisiones/permanentes/cpyssocial,Unicameral,Martes 16.00hs,,Piso P04 Oficina 430 -6075-2424 Internos 2424/25,2025-12-22
-10,ACCION SOCIAL Y SALUD PUBLICA,casyspublica,https://www.hcdn.gob.ar/comisiones/permanentes/casyspublica,Unicameral,Martes 13.30hs,,Piso P04 Oficina 445 -6075-2434 Internos 2434/35,2025-12-22
-11,"FAMILIAS, NIÑEZ Y JUVENTUDES",cfnjuventudes,https://www.hcdn.gob.ar/comisiones/permanentes/cfnjuventudes,Unicameral,Martes 16.00hs,,Piso P04 Oficina 452 -6075-2429 Internos 2429/30,2025-12-22
-12,DE LAS PERSONAS MAYORES,cpmayores,https://www.hcdn.gob.ar/comisiones/permanentes/cpmayores,Unicameral,Martes 19.00hs,,Piso P01 Oficina 140 -6075-2141 Internos 2141,2025-12-22
-13,LEGISLACION PENAL,clpenal,https://www.hcdn.gob.ar/comisiones/permanentes/clpenal,Unicameral,Martes 15.30hs,,Piso P04 Oficina 404 -6075-7493/94 Internos 2403/01,2025-12-22
-14,LEGISLACION DEL TRABAJO,cltrabajo,https://www.hcdn.gob.ar/comisiones/permanentes/cltrabajo,Unicameral,Miércoles 10.00hs,,Piso P04 Oficina 427 -6075-2420 Internos 2420/21,2025-12-22
-15,DEFENSA NACIONAL,cdnacional,https://www.hcdn.gob.ar/comisiones/permanentes/cdnacional,Unicameral,Martes 16.00hs,,Piso P04 Oficina 437 -6075-2440 Internos 2440/39,2025-12-22
-16,OBRAS PUBLICAS,copublicas,https://www.hcdn.gob.ar/comisiones/permanentes/copublicas,Unicameral,Martes 16.00hs,,Piso P01 Oficina 136 -6075-2143 Internos 2143/2137,2025-12-22
-17,AGRICULTURA Y GANADERIA,cayganaderia,https://www.hcdn.gob.ar/comisiones/permanentes/cayganaderia,Unicameral,Martes 17.30hs,,Piso P01 Oficina 104 -6075-2103 Internos 2103/04,2025-12-22
-18,FINANZAS,cfinanzas,https://www.hcdn.gob.ar/comisiones/permanentes/cfinanzas,Unicameral,Martes 16.00hs,,Piso P01 Oficina 103 -6075-2105 Internos 2105/02,2025-12-22
-19,INDUSTRIA,cindustria,https://www.hcdn.gob.ar/comisiones/permanentes/cindustria,Unicameral,Miércoles 12.00hs,,Piso P01 Oficina 106 -6075-2107 Internos 2107/06/68,2025-12-22
-20,COMERCIO,ccomercio,https://www.hcdn.gob.ar/comisiones/permanentes/ccomercio,Unicameral,Martes 14.00hs,,Piso P01 Oficina 107 -6075-2108 Internos 2108/10/49,2025-12-22
-21,ENERGIA Y COMBUSTIBLES,ceycombust,https://www.hcdn.gob.ar/comisiones/permanentes/ceycombust,Unicameral,Martes 17.00hs,,Piso P01 Oficina 131 -6075-2119 Internos 2119/18,2025-12-22
-22,COMUNICACIONES E INFORMATICA,cceinformatica,https://www.hcdn.gob.ar/comisiones/permanentes/cceinformatica,Unicameral,Martes 17.00hs,,Piso P01 Oficina 139 -6075-2144 Internos 2144/42,2025-12-22
-23,TRANSPORTES,ctransportes,https://www.hcdn.gob.ar/comisiones/permanentes/ctransportes,Unicameral,Martes 10.00hs,,Piso P01 Oficina 152 -6075-2131 Internos 2130/31,2025-12-22
-24,ECONOMIAS Y DESARROLLO REGIONAL,ceydregional,https://www.hcdn.gob.ar/comisiones/permanentes/ceydregional,Unicameral,Jueves 10.00hs,,Piso P01 Oficina 141 -6075-2140 Internos 2140/61/46,2025-12-22
-25,ASUNTOS MUNICIPALES,camunicipales,https://www.hcdn.gob.ar/comisiones/permanentes/camunicipales,Unicameral,Jueves 10.30hs,,Piso P01 Oficina 153 -6075-2129 Internos 2129/28,2025-12-22
-26,"INTERESES MARITIMOS, FLUVIALES, PESQUEROS Y PORTUARIOS",cimaritimos,https://www.hcdn.gob.ar/comisiones/permanentes/cimaritimos,Unicameral,Martes 17.30hs,,Piso P02 Oficina 219 -6075-2367 Internos 2367/2449/2356,2025-12-22
-27,VIVIENDA Y ORDENAMIENTO URBANO,cvyourbano,https://www.hcdn.gob.ar/comisiones/permanentes/cvyourbano,Unicameral,Miércoles 12.30hs,,Piso P01 Oficina 145 -6075-2136 Internos 2136/34,2025-12-22
-28,"PETICIONES, PODERES Y REGLAMENTO",cppyreglamento,https://www.hcdn.gob.ar/comisiones/permanentes/cppyreglamento,Unicameral,Martes 18.00hs,,Piso P04 Oficina 441 -6075-2436 Internos 2437/36,2025-12-22
-29,JUICIO POLITICO,cjpolitico,https://www.hcdn.gob.ar/comisiones/permanentes/cjpolitico,Unicameral,Martes 18.30hs,,Piso P04 Oficina 453 -6075-2428 Internos 2428/27,2025-12-22
-30,RECURSOS NATURALES Y CONSERVACION DEL AMBIENTE HUMANO,crnaturales,https://www.hcdn.gob.ar/comisiones/permanentes/crnaturales,Unicameral,Martes 14.30hs,,Piso P01 Oficina 149 -6075-2132 Internos 2132/2133,2025-12-22
-31,TURISMO,cturismo,https://www.hcdn.gob.ar/comisiones/permanentes/cturismo,Unicameral,Miércoles 10.00hs,,Piso P04 Oficina 431 -6075-2423 Internos 2423/22,2025-12-22
-32,ECONOMIA,ceconomia,https://www.hcdn.gob.ar/comisiones/permanentes/ceconomia,Unicameral,Jueves 11.30hs,,Piso P03 Oficina 306 -6075-2353 Internos 2353,2025-12-22
-33,MINERIA,cmineria,https://www.hcdn.gob.ar/comisiones/permanentes/cmineria,Unicameral,Miércoles 9.30hs,,Piso P03 Oficina 334 -6075-2361 Internos 2361/2365,2025-12-22
-34,PREVENCION DE ADICCIONES Y CONTROL DEL NARCOTRAFICO,cdrogadiccion,https://www.hcdn.gob.ar/comisiones/permanentes/cdrogadiccion,Unicameral,Martes 12.00hs,,Piso P02 Oficina 206 -60752241 Internos 2241,2025-12-22
-35,ANALISIS Y SEGUIMIENTO DEL CUMPLIMIENTO DE NORMAS TRIBUTARIAS Y PREVISIONALES,cmtyprevisionales,https://www.hcdn.gob.ar/comisiones/permanentes/cmtyprevisionales,Unicameral,Martes 10.30hs,,Piso P02 Oficina 253 -6075-7750 Internos 2231,2025-12-22
-36,POBLACION Y DESARROLLO HUMANO,cpydhumano,https://www.hcdn.gob.ar/comisiones/permanentes/cpydhumano,Unicameral,Miércoles 9.30hs,,Piso P01 Oficina 124 -6075-2125 Internos 2127/2125,2025-12-22
-37,DEPORTES,cdeportes,https://www.hcdn.gob.ar/comisiones/permanentes/cdeportes,Unicameral,Martes 14.00hs,,Piso P01 Oficina 135 -6075-2138 Internos 2138/2156,2025-12-22
-38,DERECHOS HUMANOS Y GARANTIAS,cdhygarantias,https://www.hcdn.gob.ar/comisiones/permanentes/cdhygarantias,Unicameral,Miércoles 14.00hs,,Piso P04 Oficina 411 -6075-2411 Internos 2411/2470,2025-12-22
-39,"ASUNTOS COOPERATIVOS, MUTUALES Y ORGANIZACIONES NO GUBERNAMENTALES",cacym,https://www.hcdn.gob.ar/comisiones/permanentes/cacym,Unicameral,Miércoles 9.00hs,,Piso P03 Oficina 309 -6075-2308/2309 Internos 2308/09/11,2025-12-22
-40,MERCOSUR,cmercosur,https://www.hcdn.gob.ar/comisiones/permanentes/cmercosur,Unicameral,Miércoles 11.00hs,,Piso P04 Oficina 424 -6075-2419 Internos 2419,2025-12-22
-41,PEQUEÑAS Y MEDIANAS EMPRESAS,cpymes,https://www.hcdn.gob.ar/comisiones/permanentes/cpymes,Unicameral,Jueves 11.00hs,,Piso P03 Oficina 335 -6075-2343 Internos 2343/2374,2025-12-22
-42,"DEFENSA DEL CONSUMIDOR, DEL USUARIO Y DE LA COMPETENCIA",cdconsumidor,https://www.hcdn.gob.ar/comisiones/permanentes/cdconsumidor,Unicameral,Miércoles 10.00hs,,Piso P03 Oficina 301 -6075-2359 Internos 2359/2355/2352,2025-12-22
-43,SEGURIDAD INTERIOR,csinterior,https://www.hcdn.gob.ar/comisiones/permanentes/csinterior,Unicameral,Miércoles 10.00hs,,Piso P02 Oficina 207 -6075-2172 Internos 2172/2209 /2264/,2025-12-22
-44,LIBERTAD DE EXPRESION,clexpresion,https://www.hcdn.gob.ar/comisiones/permanentes/clexpresion,Unicameral,Jueves 10.00hs,,Piso P01 Oficina 134 -6075-2167 Internos 2135/2139/2167,2025-12-22
-45,DISCAPACIDAD,cdiscap,https://www.hcdn.gob.ar/comisiones/permanentes/cdiscap,Unicameral,Miércoles 9.30hs,,Piso P01 Oficina 126 -60750000 Internos 2126/2112/2163,2025-12-22
-46,MUJERES Y DIVERSIDAD,cmujeresydiv,https://www.hcdn.gob.ar/comisiones/permanentes/cmujeresydiv,Unicameral,Martes 15.00hs,,Piso P04 Oficina 410 -6075-2408/2453 Internos 2408/2453/2455,2025-12-22
+1,ASUNTOS CONSTITUCIONALES,caconstitucionales,https://www.hcdn.gob.ar/comisiones/permanentes/caconstitucionales,Unicameral,Martes 14.00hs,,Piso P04 Oficina 449 -60752431 Internos 2431/32,2026-01-01
+2,LEGISLACION GENERAL,clgeneral,https://www.hcdn.gob.ar/comisiones/permanentes/clgeneral,Unicameral,Miércoles 16.00hs,,Piso P02 Oficina 235 -60752248 Internos 2248,2026-01-01
+3,RELACIONES EXTERIORES Y CULTO,creyculto,https://www.hcdn.gob.ar/comisiones/permanentes/creyculto,Unicameral,Miércoles 10.00hs,,Piso P04 Oficina 407 -6075-2409 Internos 2409/2407,2026-01-01
+4,PRESUPUESTO Y HACIENDA,cpyhacienda,https://www.hcdn.gob.ar/comisiones/permanentes/cpyhacienda,Unicameral,,,Piso P04 Oficina 418 -6075-0000 Internos 2444/2416/2450,2026-01-01
+5,EDUCACION,ceducacion,https://www.hcdn.gob.ar/comisiones/permanentes/ceducacion,Unicameral,Martes 15.00 hs,,Piso P04 Oficina 406 -6075-2426 Internos 2406/05/26,2026-01-01
+6,"CIENCIA, TECNOLOGIA E INNOVACION PRODUCTIVA",ccytecnologia,https://www.hcdn.gob.ar/comisiones/permanentes/ccytecnologia,Unicameral,Martes 18.00hs,,Piso P01 Oficina 130 -6075-2120 Internos 2120/21,2026-01-01
+7,CULTURA,ccultura,https://www.hcdn.gob.ar/comisiones/permanentes/ccultura,Unicameral,Martes 17.00hs,,Piso P04 Oficina 401 -6075-2402 Internos 2402/56/59,2026-01-01
+8,JUSTICIA,cjusticia,https://www.hcdn.gob.ar/comisiones/permanentes/cjusticia,Unicameral,Miércoles 16.00hs,,Piso P04 Oficina 423 -6075-2418 Internos 2418/17,2026-01-01
+9,PREVISION Y SEGURIDAD SOCIAL,cpyssocial,https://www.hcdn.gob.ar/comisiones/permanentes/cpyssocial,Unicameral,Martes 16.00hs,,Piso P04 Oficina 430 -6075-2424 Internos 2424/25,2026-01-01
+10,ACCION SOCIAL Y SALUD PUBLICA,casyspublica,https://www.hcdn.gob.ar/comisiones/permanentes/casyspublica,Unicameral,Martes 13.30hs,,Piso P04 Oficina 445 -6075-2434 Internos 2434/35,2026-01-01
+11,"FAMILIAS, NIÑEZ Y JUVENTUDES",cfnjuventudes,https://www.hcdn.gob.ar/comisiones/permanentes/cfnjuventudes,Unicameral,Martes 16.00hs,,Piso P04 Oficina 452 -6075-2429 Internos 2429/30,2026-01-01
+12,DE LAS PERSONAS MAYORES,cpmayores,https://www.hcdn.gob.ar/comisiones/permanentes/cpmayores,Unicameral,Martes 19.00hs,,Piso P01 Oficina 140 -6075-2141 Internos 2141,2026-01-01
+13,LEGISLACION PENAL,clpenal,https://www.hcdn.gob.ar/comisiones/permanentes/clpenal,Unicameral,Martes 15.30hs,,Piso P04 Oficina 404 -6075-7493/94 Internos 2403/01,2026-01-01
+14,LEGISLACION DEL TRABAJO,cltrabajo,https://www.hcdn.gob.ar/comisiones/permanentes/cltrabajo,Unicameral,Miércoles 10.00hs,,Piso P04 Oficina 427 -6075-2420 Internos 2420/21,2026-01-01
+15,DEFENSA NACIONAL,cdnacional,https://www.hcdn.gob.ar/comisiones/permanentes/cdnacional,Unicameral,Martes 16.00hs,,Piso P04 Oficina 437 -6075-2440 Internos 2440/39,2026-01-01
+16,OBRAS PUBLICAS,copublicas,https://www.hcdn.gob.ar/comisiones/permanentes/copublicas,Unicameral,Martes 16.00hs,,Piso P01 Oficina 136 -6075-2143 Internos 2143/2137,2026-01-01
+17,AGRICULTURA Y GANADERIA,cayganaderia,https://www.hcdn.gob.ar/comisiones/permanentes/cayganaderia,Unicameral,Martes 17.30hs,,Piso P01 Oficina 104 -6075-2103 Internos 2103/04,2026-01-01
+18,FINANZAS,cfinanzas,https://www.hcdn.gob.ar/comisiones/permanentes/cfinanzas,Unicameral,Martes 16.00hs,,Piso P01 Oficina 103 -6075-2105 Internos 2105/02,2026-01-01
+19,INDUSTRIA,cindustria,https://www.hcdn.gob.ar/comisiones/permanentes/cindustria,Unicameral,Miércoles 12.00hs,,Piso P01 Oficina 106 -6075-2107 Internos 2107/06/68,2026-01-01
+20,COMERCIO,ccomercio,https://www.hcdn.gob.ar/comisiones/permanentes/ccomercio,Unicameral,Martes 14.00hs,,Piso P01 Oficina 107 -6075-2108 Internos 2108/10/49,2026-01-01
+21,ENERGIA Y COMBUSTIBLES,ceycombust,https://www.hcdn.gob.ar/comisiones/permanentes/ceycombust,Unicameral,Martes 17.00hs,,Piso P01 Oficina 131 -6075-2119 Internos 2119/18,2026-01-01
+22,COMUNICACIONES E INFORMATICA,cceinformatica,https://www.hcdn.gob.ar/comisiones/permanentes/cceinformatica,Unicameral,Martes 17.00hs,,Piso P01 Oficina 139 -6075-2144 Internos 2144/42,2026-01-01
+23,TRANSPORTES,ctransportes,https://www.hcdn.gob.ar/comisiones/permanentes/ctransportes,Unicameral,Martes 10.00hs,,Piso P01 Oficina 152 -6075-2131 Internos 2130/31,2026-01-01
+24,ECONOMIAS Y DESARROLLO REGIONAL,ceydregional,https://www.hcdn.gob.ar/comisiones/permanentes/ceydregional,Unicameral,Jueves 10.00hs,,Piso P01 Oficina 141 -6075-2140 Internos 2140/61/46,2026-01-01
+25,ASUNTOS MUNICIPALES,camunicipales,https://www.hcdn.gob.ar/comisiones/permanentes/camunicipales,Unicameral,Jueves 10.30hs,,Piso P01 Oficina 153 -6075-2129 Internos 2129/28,2026-01-01
+26,"INTERESES MARITIMOS, FLUVIALES, PESQUEROS Y PORTUARIOS",cimaritimos,https://www.hcdn.gob.ar/comisiones/permanentes/cimaritimos,Unicameral,Martes 17.30hs,,Piso P02 Oficina 219 -6075-2367 Internos 2367/2449/2356,2026-01-01
+27,VIVIENDA Y ORDENAMIENTO URBANO,cvyourbano,https://www.hcdn.gob.ar/comisiones/permanentes/cvyourbano,Unicameral,Miércoles 12.30hs,,Piso P01 Oficina 145 -6075-2136 Internos 2136/34,2026-01-01
+28,"PETICIONES, PODERES Y REGLAMENTO",cppyreglamento,https://www.hcdn.gob.ar/comisiones/permanentes/cppyreglamento,Unicameral,Martes 18.00hs,,Piso P04 Oficina 441 -6075-2436 Internos 2437/36,2026-01-01
+29,JUICIO POLITICO,cjpolitico,https://www.hcdn.gob.ar/comisiones/permanentes/cjpolitico,Unicameral,Martes 18.30hs,,Piso P04 Oficina 453 -6075-2428 Internos 2428/27,2026-01-01
+30,RECURSOS NATURALES Y CONSERVACION DEL AMBIENTE HUMANO,crnaturales,https://www.hcdn.gob.ar/comisiones/permanentes/crnaturales,Unicameral,Martes 14.30hs,,Piso P01 Oficina 149 -6075-2132 Internos 2132/2133,2026-01-01
+31,TURISMO,cturismo,https://www.hcdn.gob.ar/comisiones/permanentes/cturismo,Unicameral,Miércoles 10.00hs,,Piso P04 Oficina 431 -6075-2423 Internos 2423/22,2026-01-01
+32,ECONOMIA,ceconomia,https://www.hcdn.gob.ar/comisiones/permanentes/ceconomia,Unicameral,Jueves 11.30hs,,Piso P03 Oficina 306 -6075-2353 Internos 2353,2026-01-01
+33,MINERIA,cmineria,https://www.hcdn.gob.ar/comisiones/permanentes/cmineria,Unicameral,Miércoles 9.30hs,,Piso P03 Oficina 334 -6075-2361 Internos 2361/2365,2026-01-01
+34,PREVENCION DE ADICCIONES Y CONTROL DEL NARCOTRAFICO,cdrogadiccion,https://www.hcdn.gob.ar/comisiones/permanentes/cdrogadiccion,Unicameral,Martes 12.00hs,,Piso P02 Oficina 206 -60752241 Internos 2241,2026-01-01
+35,ANALISIS Y SEGUIMIENTO DEL CUMPLIMIENTO DE NORMAS TRIBUTARIAS Y PREVISIONALES,cmtyprevisionales,https://www.hcdn.gob.ar/comisiones/permanentes/cmtyprevisionales,Unicameral,Martes 10.30hs,,Piso P02 Oficina 253 -6075-7750 Internos 2231,2026-01-01
+36,POBLACION Y DESARROLLO HUMANO,cpydhumano,https://www.hcdn.gob.ar/comisiones/permanentes/cpydhumano,Unicameral,Miércoles 9.30hs,,Piso P01 Oficina 124 -6075-2125 Internos 2127/2125,2026-01-01
+37,DEPORTES,cdeportes,https://www.hcdn.gob.ar/comisiones/permanentes/cdeportes,Unicameral,Martes 14.00hs,,Piso P01 Oficina 135 -6075-2138 Internos 2138/2156,2026-01-01
+38,DERECHOS HUMANOS Y GARANTIAS,cdhygarantias,https://www.hcdn.gob.ar/comisiones/permanentes/cdhygarantias,Unicameral,Miércoles 14.00hs,,Piso P04 Oficina 411 -6075-2411 Internos 2411/2470,2026-01-01
+39,"ASUNTOS COOPERATIVOS, MUTUALES Y ORGANIZACIONES NO GUBERNAMENTALES",cacym,https://www.hcdn.gob.ar/comisiones/permanentes/cacym,Unicameral,Miércoles 9.00hs,,Piso P03 Oficina 309 -6075-2308/2309 Internos 2308/09/11,2026-01-01
+40,MERCOSUR,cmercosur,https://www.hcdn.gob.ar/comisiones/permanentes/cmercosur,Unicameral,Miércoles 11.00hs,,Piso P04 Oficina 424 -6075-2419 Internos 2419,2026-01-01
+41,PEQUEÑAS Y MEDIANAS EMPRESAS,cpymes,https://www.hcdn.gob.ar/comisiones/permanentes/cpymes,Unicameral,Jueves 11.00hs,,Piso P03 Oficina 335 -6075-2343 Internos 2343/2374,2026-01-01
+42,"DEFENSA DEL CONSUMIDOR, DEL USUARIO Y DE LA COMPETENCIA",cdconsumidor,https://www.hcdn.gob.ar/comisiones/permanentes/cdconsumidor,Unicameral,Miércoles 10.00hs,,Piso P03 Oficina 301 -6075-2359 Internos 2359/2355/2352,2026-01-01
+43,SEGURIDAD INTERIOR,csinterior,https://www.hcdn.gob.ar/comisiones/permanentes/csinterior,Unicameral,Miércoles 10.00hs,,Piso P02 Oficina 207 -6075-2172 Internos 2172/2209 /2264/,2026-01-01
+44,LIBERTAD DE EXPRESION,clexpresion,https://www.hcdn.gob.ar/comisiones/permanentes/clexpresion,Unicameral,Jueves 10.00hs,,Piso P01 Oficina 134 -6075-2167 Internos 2135/2139/2167,2026-01-01
+45,DISCAPACIDAD,cdiscap,https://www.hcdn.gob.ar/comisiones/permanentes/cdiscap,Unicameral,Miércoles 9.30hs,,Piso P01 Oficina 126 -60750000 Internos 2126/2112/2163,2026-01-01
+46,MUJERES Y DIVERSIDAD,cmujeresydiv,https://www.hcdn.gob.ar/comisiones/permanentes/cmujeresydiv,Unicameral,Martes 15.00hs,,Piso P04 Oficina 410 -6075-2408/2453 Internos 2408/2453/2455,2026-01-01
