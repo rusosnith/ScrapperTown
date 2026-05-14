@@ -33,6 +33,25 @@ Extrae información sobre los legisladores de la Legislatura de la Ciudad de Bue
 
 **Funcionalidad especial:** Sistema incremental que detecta cuando un legislador deja su cargo y registra automáticamente las fechas de baja, manteniendo un historial completo.
 
+### 3. Scraper de Sesiones - Legislatura Porteña
+Extrae sesiones de la Legislatura de la Ciudad de Buenos Aires desde el webservice AJAX que alimenta la vista de `InfoSesion`.
+
+**Datos extraídos:**
+- `id_sesion_lp`, `nro_orden_lp`, `ano_parlamentario`, `fecha`
+- `id_sesion_tipo`, `abrev_sesion_tipo`, `dsc_sesion_tipo`
+- `labor_documento`, `prelabor_documento`, `asuntos_considerados_documento`
+- `archivo_vt`, `url_detalle`
+
+**Archivos generados:**
+- `sesiones_legislatura.csv`: dataset histórico incremental de sesiones
+
+**Automatización:** Se ejecuta el 1° de cada mes
+
+**Uso local:**
+- `python scrape_sesiones.py --desde 01/01/2024 --hasta 31/12/2024`
+- `python scrape_sesiones.py --desde 2024-01-01 --hasta 2024-12-31 --formato csv --salida sesiones_2024.csv`
+- `python scrape_sesiones.py` para actualizar el CSV histórico local con modo automático
+
 ## Uso local
 
 Para ejecutar cualquier scraper localmente:
@@ -40,8 +59,9 @@ Para ejecutar cualquier scraper localmente:
 1. Clone este repositorio
 2. Instale las dependencias: `pip install requests beautifulsoup4 pandas`
 3. Ejecute el script correspondiente:
-   - `python scraper_comisiones_mejorado.py`
+   - `python scraper.py`
    - `python scraper_legiscaba.py`
+   - `python scrape_sesiones.py`
 
 ## Licencia
 Este proyecto está bajo la licencia MIT.
