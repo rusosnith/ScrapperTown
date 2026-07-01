@@ -1112,3 +1112,5 @@ id_sesion_lp,nro_orden_lp,ano_parlamentario,fecha,id_sesion_tipo,abrev_sesion_ti
 1146,10674,2025,2026-03-02,3,INI,INICIAL,221644,0,0,0,https://www.legislatura.gob.ar/InfoSesion/1146
 1147,10675,2026,2026-04-09,1,ORD,ORDINARIA,222800,222771,222868,0,https://www.legislatura.gob.ar/InfoSesion/1147
 1148,10676,2026,2026-05-14,1,ORD,ORDINARIA,223719,223665,223856,0,https://www.legislatura.gob.ar/InfoSesion/1148
+1150,10678,2026,2026-06-18,1,ORD,ORDINARIA,224754,224676,224888,0,https://www.legislatura.gob.ar/InfoSesion/1150
+1149,10677,2026,2026-07-01,4,ESP,ESPECIAL,223895,0,0,0,https://www.legislatura.gob.ar/InfoSesion/1149
